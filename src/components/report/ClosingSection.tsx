@@ -100,37 +100,6 @@ export const ClosingSection = () => {
             </div>
           </div>
 
-          {/* Newsletter signup */}
-          <div 
-            className={`mt-24 md:mt-32 border-t border-primary-foreground/20 pt-16 transition-all duration-1000 ease-luxury ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-            }`}
-            style={{ transitionDelay: '300ms' }}
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
-              <div className="lg:col-span-6">
-                <h3 className="font-serif text-2xl md:text-3xl">
-                  Get the 2026 Report
-                </h3>
-                <p className="text-primary-foreground/60 mt-2 text-sm md:text-base">
-                  Be the first to receive next year's chronicle.
-                </p>
-              </div>
-              
-              <div className="lg:col-span-6">
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <input 
-                    type="email"
-                    placeholder="your@email.com"
-                    className="flex-1 h-12 bg-transparent border-b border-primary-foreground/40 px-0 py-2 text-primary-foreground placeholder:text-primary-foreground/40 placeholder:font-serif placeholder:italic focus:outline-none focus:border-accent transition-colors duration-500"
-                  />
-                  <button className="btn-gold-slide h-12 px-8 bg-primary-foreground text-primary text-xs tracking-button uppercase font-medium hover:text-primary-foreground transition-colors duration-500">
-                    <span>Subscribe</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
 
           {/* Footer */}
           <div 
