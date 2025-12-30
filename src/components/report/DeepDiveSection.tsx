@@ -177,7 +177,7 @@ const PingPongTimeline = () => {
               </div>
             </div>
 
-            {/* Bar chart grid */}
+            {/* Bar chart grid - side by side bars */}
             <div className="flex items-end gap-1 sm:gap-2 h-24">
               {monthStats.map((stat, index) => (
                 <button
@@ -188,19 +188,19 @@ const PingPongTimeline = () => {
                   } ${selectedMonth === stat.month ? 'ring-2 ring-accent ring-offset-1 ring-offset-primary' : ''}`}
                   style={{ transitionDelay: `${index * 50}ms` }}
                 >
-                  {/* Stacked bar container */}
+                  {/* Side by side bar container */}
                   <div 
-                    className="w-full flex flex-col justify-end"
+                    className="w-full flex items-end justify-center gap-px"
                     style={{ height: '80px' }}
                   >
-                    {/* US portion (top) */}
+                    {/* US bar (left) */}
                     <div 
-                      className="w-full bg-foreground/60 transition-all duration-500 group-hover:bg-foreground/80"
+                      className="flex-1 bg-foreground/60 transition-all duration-500 group-hover:bg-foreground/80"
                       style={{ height: `${(stat.us / maxTotal) * 80}px` }}
                     />
-                    {/* China portion (bottom) */}
+                    {/* China bar (right) */}
                     <div 
-                      className="w-full bg-accent transition-all duration-500 group-hover:brightness-110"
+                      className="flex-1 bg-accent transition-all duration-500 group-hover:brightness-110"
                       style={{ height: `${(stat.china / maxTotal) * 80}px` }}
                     />
                   </div>
@@ -245,51 +245,47 @@ const PingPongTimeline = () => {
         </div>
 
         <div className="lg:col-span-8">
-          {/* Timeline - full height, no scroll */}
+          {/* Timeline - center line on all screens */}
           <div className="relative">
-            {/* Center line - hidden on mobile */}
-            <div className="absolute left-1/2 top-0 bottom-0 w-px bg-foreground/10 hidden lg:block" />
+            {/* Center line - visible on all screens */}
+            <div className="absolute left-1/2 top-0 bottom-0 w-px bg-foreground/10 -translate-x-1/2" />
 
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {displayEvents.map((event, index) => (
                 <div 
                   key={`${event.date}-${event.model}-${index}`}
-                  className={`flex flex-col lg:flex-row items-start lg:items-center gap-2 lg:gap-3 transition-all duration-500 ease-luxury ${
+                  className={`flex items-center gap-1 sm:gap-2 transition-all duration-500 ease-luxury ${
                     isVisible ? 'opacity-100' : 'opacity-0'
-                  } ${event.side === 'us' ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}
+                  } ${event.side === 'us' ? 'flex-row' : 'flex-row-reverse'}`}
                   style={{ transitionDelay: `${Math.min(index * 30, 300)}ms` }}
                 >
-                  {/* Content */}
-                  <div className={`flex-1 w-full lg:w-auto ${event.side === 'us' ? 'lg:text-right' : 'lg:text-left'}`}>
-                    <div className={`flex items-center gap-2 flex-wrap ${
-                      event.side === 'us' ? 'lg:justify-end' : 'lg:justify-start'
+                  {/* Content - US on left, China on right */}
+                  <div className={`flex-1 min-w-0 ${event.side === 'us' ? 'text-right pr-1 sm:pr-2' : 'text-left pl-1 sm:pl-2'}`}>
+                    <div className={`flex items-center gap-1 sm:gap-2 flex-wrap ${
+                      event.side === 'us' ? 'justify-end' : 'justify-start'
                     }`}>
-                      {/* Mobile: show dot inline */}
-                      <div className={`w-2 h-2 rounded-full shrink-0 lg:hidden ${
-                        event.side === 'us' ? 'bg-foreground' : 'bg-accent'
-                      }`} />
-                      <span className="text-[10px] text-muted-foreground">{event.date}</span>
-                      <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                      <span className="text-[8px] sm:text-[10px] text-muted-foreground">{event.date}</span>
+                      <span className={`text-[8px] sm:text-[10px] px-1 sm:px-1.5 py-0.5 rounded ${
                         event.side === 'us' ? 'bg-foreground/10' : 'bg-accent/20'
                       }`}>
                         {event.company}
                       </span>
                     </div>
-                    <p className="font-serif text-sm md:text-base mt-1 leading-tight">
+                    <p className="font-serif text-xs sm:text-sm md:text-base mt-0.5 sm:mt-1 leading-tight truncate">
                       {event.model}
                     </p>
-                    <span className="text-[10px] tracking-luxury text-accent">
+                    <span className="text-[8px] sm:text-[10px] tracking-luxury text-accent hidden sm:inline">
                       {event.action}
                     </span>
                   </div>
                   
-                  {/* Center dot - desktop only */}
-                  <div className={`w-2.5 h-2.5 rounded-full shrink-0 hidden lg:block ${
+                  {/* Center dot */}
+                  <div className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full shrink-0 z-10 ${
                     event.side === 'us' ? 'bg-foreground' : 'bg-accent'
                   }`} />
                   
-                  {/* Spacer for opposite side - desktop only */}
-                  <div className="flex-1 hidden lg:block" />
+                  {/* Spacer for opposite side */}
+                  <div className="flex-1" />
                 </div>
               ))}
             </div>
