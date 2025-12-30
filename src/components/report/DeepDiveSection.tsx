@@ -155,69 +155,75 @@ const PingPongTimeline = () => {
             <em className="text-accent">War</em>
           </h3>
           <p className="mt-4 text-muted-foreground text-sm md:text-base leading-relaxed">
-            🇺🇸 vs 🇨🇳：一场按周甚至按天交替领跑的军备竞赛。
-            2025年共计 {pingPongWar.length} 次重大模型发布。
+            🇺🇸 vs 🇨🇳: An arms race with leads swapping weekly, sometimes daily.
+            {pingPongWar.length} major model releases in 2025.
           </p>
 
           {/* Month selector bar chart - stacked bars */}
           <div className="mt-8 space-y-2">
             <span className="text-[10px] tracking-luxury uppercase text-muted-foreground">
-              按月筛选 (点击月份查看详情)
+              Filter by Month (Click to View Details)
             </span>
             
             {/* Legend for bar chart */}
             <div className="flex items-center gap-4 mt-2 mb-3">
               <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 bg-accent" />
-                <span className="text-[10px] text-muted-foreground">🇨🇳 中国</span>
+                <div className="w-3 h-3 bg-amber-600" />
+                <span className="text-[10px] text-muted-foreground">🇨🇳 China</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 bg-foreground/60" />
-                <span className="text-[10px] text-muted-foreground">🇺🇸 美国</span>
+                <div className="w-3 h-3 bg-amber-300" />
+                <span className="text-[10px] text-muted-foreground">🇺🇸 USA</span>
               </div>
             </div>
 
-            {/* Bar chart grid - side by side bars */}
+            {/* Bar chart grid - stacked bars */}
             <div className="flex items-end gap-1 sm:gap-2 h-24">
-              {monthStats.map((stat, index) => (
-                <button
-                  key={stat.month}
-                  onClick={() => setSelectedMonth(selectedMonth === stat.month ? null : stat.month)}
-                  className={`flex-1 flex flex-col items-stretch transition-all duration-300 ease-luxury group ${
-                    isVisible ? 'opacity-100' : 'opacity-0'
-                  } ${selectedMonth === stat.month ? 'ring-2 ring-accent ring-offset-1 ring-offset-primary' : ''}`}
-                  style={{ transitionDelay: `${index * 50}ms` }}
-                >
-                  {/* Side by side bar container */}
-                  <div 
-                    className="w-full flex items-end justify-center gap-px"
-                    style={{ height: '80px' }}
+              {monthStats.map((stat, index) => {
+                const totalHeight = (stat.total / maxTotal) * 80;
+                const chinaHeight = stat.total > 0 ? (stat.china / stat.total) * totalHeight : 0;
+                const usHeight = stat.total > 0 ? (stat.us / stat.total) * totalHeight : 0;
+                
+                return (
+                  <button
+                    key={stat.month}
+                    onClick={() => setSelectedMonth(selectedMonth === stat.month ? null : stat.month)}
+                    className={`flex-1 flex flex-col items-stretch transition-all duration-300 ease-luxury group ${
+                      isVisible ? 'opacity-100' : 'opacity-0'
+                    } ${selectedMonth === stat.month ? 'ring-2 ring-accent ring-offset-1 ring-offset-primary' : ''}`}
+                    style={{ transitionDelay: `${index * 50}ms` }}
                   >
-                    {/* US bar (left) */}
+                    {/* Stacked bar container */}
                     <div 
-                      className="flex-1 bg-foreground/60 transition-all duration-500 group-hover:bg-foreground/80"
-                      style={{ height: `${(stat.us / maxTotal) * 80}px` }}
-                    />
-                    {/* China bar (right) */}
-                    <div 
-                      className="flex-1 bg-accent transition-all duration-500 group-hover:brightness-110"
-                      style={{ height: `${(stat.china / maxTotal) * 80}px` }}
-                    />
-                  </div>
-                  {/* Month number label */}
-                  <span className="text-[10px] sm:text-xs text-muted-foreground mt-1 text-center">
-                    {stat.month}
-                  </span>
-                </button>
-              ))}
+                      className="w-full flex flex-col items-stretch justify-end"
+                      style={{ height: '80px' }}
+                    >
+                      {/* China part (top - dark amber) */}
+                      <div 
+                        className="w-full bg-amber-600 transition-all duration-500 group-hover:brightness-110"
+                        style={{ height: `${chinaHeight}px` }}
+                      />
+                      {/* US part (bottom - light amber) */}
+                      <div 
+                        className="w-full bg-amber-300 transition-all duration-500 group-hover:brightness-110"
+                        style={{ height: `${usHeight}px` }}
+                      />
+                    </div>
+                    {/* Month abbreviation label */}
+                    <span className="text-[10px] sm:text-xs text-muted-foreground mt-1 text-center">
+                      {monthNames[stat.month - 1]}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
 
             {/* Selection info */}
             <div className="flex justify-between mt-4 text-[10px] text-muted-foreground">
               <span>
                 {selectedMonth !== null 
-                  ? `${selectedMonth}月: 🇨🇳 ${monthStats[selectedMonth - 1].china} / 🇺🇸 ${monthStats[selectedMonth - 1].us}`
-                  : '显示全年数据'
+                  ? `${monthNames[selectedMonth - 1]}: 🇨🇳 ${monthStats[selectedMonth - 1].china} / 🇺🇸 ${monthStats[selectedMonth - 1].us}`
+                  : 'Showing full year data'
                 }
               </span>
               {selectedMonth !== null && (
@@ -225,7 +231,7 @@ const PingPongTimeline = () => {
                   onClick={() => setSelectedMonth(null)}
                   className="text-accent hover:underline"
                 >
-                  显示全部
+                  Show All
                 </button>
               )}
             </div>
@@ -235,11 +241,11 @@ const PingPongTimeline = () => {
           <div className="mt-8 grid grid-cols-2 gap-4">
             <div className="border-t border-foreground/20 pt-4">
               <span className="font-serif text-3xl">{pingPongWar.filter(e => e.side === 'china').length}</span>
-              <p className="text-[10px] text-muted-foreground mt-1">🇨🇳 中国发布</p>
+              <p className="text-[10px] text-muted-foreground mt-1">🇨🇳 China Releases</p>
             </div>
             <div className="border-t border-foreground/20 pt-4">
               <span className="font-serif text-3xl">{pingPongWar.filter(e => e.side === 'us').length}</span>
-              <p className="text-[10px] text-muted-foreground mt-1">🇺🇸 美国发布</p>
+              <p className="text-[10px] text-muted-foreground mt-1">🇺🇸 USA Releases</p>
             </div>
           </div>
         </div>
@@ -306,7 +312,7 @@ const PingPongTimeline = () => {
           {/* Pull quote */}
           <div className="mt-8 p-6 bg-secondary/30">
             <p className="font-serif text-base md:text-lg italic text-center">
-              "以前是美国领跑半年，2025 年变成了按周甚至按天的交替领跑。"
+              "What used to be a six-month American lead became a weekly, sometimes daily, back-and-forth in 2025."
             </p>
           </div>
         </div>
