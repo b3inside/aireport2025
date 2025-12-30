@@ -2,95 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* 
+ * Luxury / Editorial Design System
+ * Inspired by Vogue, Harper's Bazaar, Kinfolk, Chanel, Hermès, Aesop
+ * All colors in HSL format
+ */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Core Palette - Sophisticated Monochrome */
+    --background: 40 20% 97%; /* Warm Alabaster #F9F8F6 */
+    --foreground: 0 0% 10%; /* Rich Charcoal #1A1A1A */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 40 20% 97%;
+    --card-foreground: 0 0% 10%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 40 20% 97%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary - Charcoal for main elements */
+    --primary: 0 0% 10%;
+    --primary-foreground: 40 20% 97%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Pale Taupe for subtle surfaces */
+    --secondary: 30 16% 90%; /* #EBE5DE */
+    --secondary-foreground: 0 0% 10%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted - Warm Grey for secondary text */
+    --muted: 30 16% 90%;
+    --muted-foreground: 25 5% 40%; /* #6C6863 */
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent - Metallic Gold for hover/focus */
+    --accent: 43 65% 52%; /* #D4AF37 */
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 0 0% 10%;
+    --input: 0 0% 10%;
+    --ring: 43 65% 52%;
 
-    --radius: 0.5rem;
+    /* Strict 0px radius for architectural precision */
+    --radius: 0px;
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Sidebar (keeping for compatibility) */
+    --sidebar-background: 40 20% 97%;
+    --sidebar-foreground: 0 0% 10%;
+    --sidebar-primary: 0 0% 10%;
+    --sidebar-primary-foreground: 40 20% 97%;
+    --sidebar-accent: 30 16% 90%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 0 0% 10%;
+    --sidebar-ring: 43 65% 52%;
   }
 
+  /* Dark sections use inverted palette */
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 10%;
+    --foreground: 40 20% 97%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 10%;
+    --card-foreground: 40 20% 97%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 40 20% 97%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 40 20% 97%;
+    --primary-foreground: 0 0% 10%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 40 20% 97%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 40 10% 70%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 43 65% 52%;
+    --accent-foreground: 0 0% 10%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 40 20% 97%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 40 20% 97%;
+    --input: 40 20% 97%;
+    --ring: 43 65% 52%;
   }
 }
 
@@ -99,7 +94,170 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Typography - Playfair for headings */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+@layer components {
+  /* Paper Noise Texture Overlay */
+  .paper-texture {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  /* Visible Grid Lines */
+  .grid-lines {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 40;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 4rem;
+    max-width: 1600px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+  }
+
+  .grid-lines::before,
+  .grid-lines::after {
+    content: '';
+    width: 1px;
+    height: 100%;
+    background: hsl(var(--foreground) / 0.08);
+  }
+
+  .grid-line {
+    width: 1px;
+    height: 100%;
+    background: hsl(var(--foreground) / 0.08);
+  }
+
+  /* Vertical Text Labels */
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  /* Drop Cap for Editorial Feel */
+  .drop-cap::first-letter {
+    float: left;
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem;
+    line-height: 0.8;
+    margin-right: 0.75rem;
+    margin-top: 0.25rem;
+    color: hsl(var(--foreground));
+  }
+
+  /* Grayscale to Color Image Transition */
+  .editorial-image {
+    filter: grayscale(100%);
+    transition: filter 1500ms cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                transform 1500ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 700ms ease-out;
+  }
+
+  .editorial-image:hover,
+  .group:hover .editorial-image {
+    filter: grayscale(0%);
+    transform: scale(1.05);
+  }
+
+  /* Underline Animation for Links */
+  .story-link {
+    position: relative;
+    display: inline-block;
+  }
+
+  .story-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background: hsl(var(--accent));
+    transform-origin: bottom right;
+    transition: transform 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .story-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+
+  /* Gold Slide Button Animation */
+  .btn-gold-slide {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-gold-slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: hsl(var(--accent));
+    transform: translateX(-100%);
+    transition: transform 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .btn-gold-slide:hover::before {
+    transform: translateX(0);
+  }
+
+  .btn-gold-slide > span {
+    position: relative;
+    z-index: 10;
+  }
+}
+
+@layer utilities {
+  /* Luxury timing functions */
+  .duration-luxury {
+    transition-duration: 700ms;
+  }
+
+  .duration-cinematic {
+    transition-duration: 1500ms;
+  }
+
+  .duration-epic {
+    transition-duration: 2000ms;
+  }
+
+  .ease-luxury {
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Letter spacing for luxury feel */
+  .tracking-luxury {
+    letter-spacing: 0.25em;
+  }
+
+  .tracking-button {
+    letter-spacing: 0.2em;
+  }
+
+  /* Line heights for editorial typography */
+  .leading-headline {
+    line-height: 0.9;
   }
 }
