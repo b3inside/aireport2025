@@ -94,7 +94,7 @@ const DeflationChart = () => {
 
 const PingPongTimeline = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState<number | null>(1);
   const timelineRef = useRef<HTMLDivElement>(null);
 
   const monthNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
