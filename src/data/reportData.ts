@@ -140,24 +140,89 @@ export interface PingPongEvent {
   date: string;
   side: 'us' | 'china';
   model: string;
+  company: string;
   action: string;
 }
 
 export const pingPongWar: PingPongEvent[] = [
-  { date: "Jan 20", side: "china", model: "DeepSeek R1", action: "serves" },
-  { date: "Jan 31", side: "us", model: "o3-mini", action: "returns" },
-  { date: "Mar 15", side: "china", model: "Qwen2.5-Omni", action: "volleys" },
-  { date: "Apr 18", side: "us", model: "Llama 4", action: "smashes" },
-  { date: "Apr 29", side: "china", model: "Qwen 3", action: "counters" },
-  { date: "May 14", side: "us", model: "Gemini 2.5", action: "drives" },
-  { date: "Jul 22", side: "china", model: "Qwen3-Coder", action: "spikes" },
-  { date: "Aug 12", side: "us", model: "GPT-5", action: "returns" },
-  { date: "Sep 18", side: "us", model: "OpenAI o1", action: "lobs" },
-  { date: "Sep 25", side: "china", model: "Qwen3-Max", action: "smashes" },
-  { date: "Oct 30", side: "us", model: "Computer Use", action: "volleys" },
-  { date: "Nov 15", side: "us", model: "Gemini 3.0", action: "intercepts" },
-  { date: "Dec 10", side: "us", model: "GPT-5.2", action: "saves" },
-  { date: "Dec 20", side: "china", model: "DeepSeek V3.2", action: "returns" },
+  // January
+  { date: "Jan 20", side: "china", model: "DeepSeek-R1", company: "DeepSeek", action: "发球" },
+  { date: "Jan 23", side: "china", model: "豆包 1.5 Pro", company: "ByteDance", action: "跟进" },
+  { date: "Jan 27", side: "china", model: "Qwen2.5-Max", company: "Alibaba", action: "扣杀" },
+  { date: "Jan 31", side: "us", model: "o3-mini", company: "OpenAI", action: "回球" },
+  // February
+  { date: "Feb 05", side: "us", model: "Gemini 2.0 Flash GA", company: "Google", action: "反击" },
+  { date: "Feb 17", side: "china", model: "Step-Video-T2V", company: "StepFun", action: "截击" },
+  { date: "Feb 27", side: "us", model: "GPT-4.5 Preview", company: "OpenAI", action: "试探" },
+  // March
+  { date: "Mar 16", side: "china", model: "文心 4.5 / X1", company: "Baidu", action: "双打" },
+  { date: "Mar 25", side: "us", model: "Gemini 2.5 Pro Exp", company: "Google", action: "反攻" },
+  { date: "Mar 25", side: "china", model: "DeepSeek-V3-0324", company: "DeepSeek", action: "同步回应" },
+  { date: "Mar 27", side: "china", model: "Qwen2.5-Omni", company: "Alibaba", action: "全模态出击" },
+  // April
+  { date: "Apr 05", side: "us", model: "Llama 4 Scout/Maverick", company: "Meta", action: "开源反击" },
+  { date: "Apr 13", side: "china", model: "Skywork-OR1", company: "Kunlun", action: "侧翼进攻" },
+  { date: "Apr 14", side: "china", model: "GLM-4-32B/9B", company: "Zhipu", action: "跟进" },
+  { date: "Apr 15", side: "us", model: "o3 / o4-mini", company: "OpenAI", action: "推理升级" },
+  { date: "Apr 28", side: "china", model: "Qwen3 系列", company: "Alibaba", action: "重炮出击" },
+  // May
+  { date: "May 20", side: "us", model: "Codex-1", company: "OpenAI", action: "Agent发球" },
+  { date: "May 21", side: "us", model: "Gemini 2.5 / Veo 3", company: "Google", action: "全面进攻" },
+  { date: "May 22", side: "china", model: "混元 TurboS", company: "Tencent", action: "即时回应" },
+  { date: "May 23", side: "us", model: "Claude 4 Opus/Sonnet", company: "Anthropic", action: "重磅出击" },
+  { date: "May 29", side: "china", model: "DeepSeek-R1-0528", company: "DeepSeek", action: "快速迭代" },
+  // June
+  { date: "Jun 06", side: "china", model: "Qwen3-Embedding", company: "Alibaba", action: "基础设施" },
+  { date: "Jun 11", side: "us", model: "o3-pro", company: "OpenAI", action: "专业版" },
+  { date: "Jun 12", side: "china", model: "豆包 1.6 / Seedance", company: "ByteDance", action: "视频反击" },
+  { date: "Jun 18", side: "us", model: "Gemini 2.5 GA", company: "Google", action: "正式版" },
+  { date: "Jun 18", side: "china", model: "MiniMax-M1", company: "MiniMax", action: "开源推理" },
+  // July
+  { date: "Jul 04", side: "china", model: "Qwen-TTS / VLo", company: "Alibaba", action: "多模态扩展" },
+  { date: "Jul 11", side: "us", model: "Grok 4", company: "xAI", action: "强势入场" },
+  { date: "Jul 18", side: "us", model: "ChatGPT Agent", company: "OpenAI", action: "Agent升级" },
+  { date: "Jul 23", side: "china", model: "Qwen3-Coder 480B", company: "Alibaba", action: "代码重炮" },
+  { date: "Jul 29", side: "china", model: "GLM-4.5 / Step 3", company: "Zhipu/StepFun", action: "联合进攻" },
+  // August
+  { date: "Aug 06", side: "us", model: "Claude Opus 4.1", company: "Anthropic", action: "迭代升级" },
+  { date: "Aug 07", side: "us", model: "gpt-oss-120b", company: "OpenAI", action: "开源试水" },
+  { date: "Aug 07", side: "us", model: "Genie 3", company: "Google", action: "世界模型" },
+  { date: "Aug 08", side: "us", model: "GPT-5 系列", company: "OpenAI", action: "王者归来" },
+  { date: "Aug 18", side: "china", model: "混元3D世界模型", company: "Tencent", action: "3D反击" },
+  { date: "Aug 20", side: "china", model: "DeepSeek-V3.1", company: "DeepSeek", action: "混合推理" },
+  { date: "Aug 22", side: "china", model: "Seed-OSS-36B", company: "ByteDance", action: "开源跟进" },
+  { date: "Aug 24", side: "us", model: "Grok 2.5 开源", company: "xAI", action: "开源反击" },
+  // September
+  { date: "Sep 09", side: "china", model: "Qwen3-Max Preview", company: "Alibaba", action: "万亿预览" },
+  { date: "Sep 10", side: "us", model: "Veo 3 API", company: "Google", action: "视频API" },
+  { date: "Sep 16", side: "us", model: "GPT-5-Codex", company: "OpenAI", action: "代码专精" },
+  { date: "Sep 22", side: "us", model: "Grok 4 Fast", company: "xAI", action: "速度升级" },
+  { date: "Sep 23", side: "china", model: "DeepSeek-V3.1-Terminus", company: "DeepSeek", action: "安全版本" },
+  { date: "Sep 25", side: "china", model: "Qwen MAX / Wan 2.5", company: "Alibaba", action: "双线出击" },
+  { date: "Sep 30", side: "us", model: "Claude Sonnet 4.5", company: "Anthropic", action: "中端升级" },
+  // October
+  { date: "Oct 13", side: "us", model: "Gemini 2.5 Computer Use", company: "Google", action: "Agent能力" },
+  { date: "Oct 20", side: "us", model: "Veo 3.1 / Claude Haiku 4.5", company: "Google/Anthropic", action: "多点开花" },
+  { date: "Oct 21", side: "china", model: "DeepSeek-OCR", company: "DeepSeek", action: "OCR突破" },
+  { date: "Oct 22", side: "china", model: "GLM-4.6 / CodeBuddy", company: "Zhipu/Tencent", action: "代码工具" },
+  { date: "Oct 28", side: "china", model: "MiniMax M2", company: "MiniMax", action: "模型升级" },
+  // November
+  { date: "Nov 04", side: "china", model: "Qwen3-Max Thinking", company: "Alibaba", action: "深度思考" },
+  { date: "Nov 11", side: "china", model: "文心 5.0 Preview", company: "Baidu", action: "预览版" },
+  { date: "Nov 13", side: "us", model: "GPT-5.1", company: "OpenAI", action: "快速迭代" },
+  { date: "Nov 17", side: "china", model: "GLM-4.6 登顶", company: "Zhipu", action: "榜首夺取" },
+  { date: "Nov 19", side: "us", model: "Gemini 3 / Grok 4.1", company: "Google/xAI", action: "双雄争霸" },
+  { date: "Nov 21", side: "us", model: "Nemotron 3 / SAM 3", company: "NVIDIA/Meta", action: "基础设施" },
+  { date: "Nov 25", side: "us", model: "Claude Opus 4.5", company: "Anthropic", action: "旗舰升级" },
+  // December
+  { date: "Dec 02", side: "china", model: "DeepSeek V3.2", company: "DeepSeek", action: "年终大招" },
+  { date: "Dec 09", side: "china", model: "混元 2.0 406B", company: "Tencent", action: "规模升级" },
+  { date: "Dec 12", side: "us", model: "GPT-5.2", company: "OpenAI", action: "底线救球" },
+  { date: "Dec 17", side: "china", model: "Wan 2.6 电影级", company: "Alibaba", action: "视频进化" },
+  { date: "Dec 18", side: "us", model: "Gemini 3 Flash", company: "Google", action: "极速版本" },
+  { date: "Dec 22", side: "us", model: "Trellis 2 / SAM Audio", company: "Microsoft/Meta", action: "多模态" },
+  { date: "Dec 24", side: "china", model: "GLM-4.7 / MiniMax M2.1", company: "Zhipu/MiniMax", action: "年末冲刺" },
+  { date: "Dec 29", side: "china", model: "Qwen Code v0.5", company: "Alibaba", action: "收官之作" },
 ];
 
 export interface PersonalityMilestone {
