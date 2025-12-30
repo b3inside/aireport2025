@@ -94,7 +94,24 @@ const DeflationChart = () => {
 
 const PingPongTimeline = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
+
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  
+  // Group events by month
+  const eventsByMonth = months.reduce((acc, month) => {
+    acc[month] = pingPongWar.filter(e => e.date.startsWith(month));
+    return acc;
+  }, {} as Record<string, typeof pingPongWar>);
+
+  // Count by side per month
+  const monthStats = months.map(month => {
+    const events = eventsByMonth[month];
+    const china = events.filter(e => e.side === 'china').length;
+    const us = events.filter(e => e.side === 'us').length;
+    return { month, china, us, total: china + us };
+  });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -113,6 +130,10 @@ const PingPongTimeline = () => {
     return () => observer.disconnect();
   }, []);
 
+  const displayEvents = selectedMonth 
+    ? eventsByMonth[selectedMonth] 
+    : pingPongWar.slice(0, 12); // Show first 12 if no month selected
+
   return (
     <div 
       ref={timelineRef}
@@ -130,36 +151,112 @@ const PingPongTimeline = () => {
             <em className="text-accent">War</em>
           </h3>
           <p className="mt-4 text-muted-foreground text-sm md:text-base leading-relaxed">
-            USA vs China: A volley-by-volley chronicle. What was once a six-month lead 
-            became a week-by-week exchange.
+            🇺🇸 vs 🇨🇳：一场按周甚至按天交替领跑的军备竞赛。
+            2025年共计 {pingPongWar.length} 次重大模型发布。
           </p>
+
+          {/* Month selector bar chart */}
+          <div className="mt-8 space-y-2">
+            <span className="text-[10px] tracking-luxury uppercase text-muted-foreground">
+              按月筛选
+            </span>
+            <div className="grid grid-cols-12 gap-1 mt-2">
+              {monthStats.map((stat, index) => (
+                <button
+                  key={stat.month}
+                  onClick={() => setSelectedMonth(selectedMonth === stat.month ? null : stat.month)}
+                  className={`relative h-16 transition-all duration-300 ease-luxury ${
+                    isVisible ? 'opacity-100' : 'opacity-0'
+                  } ${selectedMonth === stat.month ? 'ring-1 ring-accent' : ''}`}
+                  style={{ transitionDelay: `${index * 50}ms` }}
+                >
+                  {/* China portion (bottom) */}
+                  <div 
+                    className="absolute bottom-0 left-0 right-0 bg-accent transition-all duration-500"
+                    style={{ height: `${(stat.china / Math.max(...monthStats.map(s => s.total))) * 100}%` }}
+                  />
+                  {/* US portion (top) */}
+                  <div 
+                    className="absolute bottom-0 left-0 right-0 bg-foreground/40 transition-all duration-500"
+                    style={{ 
+                      height: `${((stat.china + stat.us) / Math.max(...monthStats.map(s => s.total))) * 100}%`,
+                      clipPath: `inset(${(stat.china / (stat.china + stat.us || 1)) * 100}% 0 0 0)`
+                    }}
+                  />
+                  <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[8px] text-muted-foreground">
+                    {stat.month.slice(0, 1)}
+                  </span>
+                </button>
+              ))}
+            </div>
+            <div className="flex justify-between mt-6 text-[10px] text-muted-foreground">
+              <span>点击月份查看详情</span>
+              {selectedMonth && (
+                <button 
+                  onClick={() => setSelectedMonth(null)}
+                  className="text-accent hover:underline"
+                >
+                  显示全部
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="mt-8 grid grid-cols-2 gap-4">
+            <div className="border-t border-foreground/20 pt-4">
+              <span className="font-serif text-3xl">{pingPongWar.filter(e => e.side === 'china').length}</span>
+              <p className="text-[10px] text-muted-foreground mt-1">🇨🇳 中国发布</p>
+            </div>
+            <div className="border-t border-foreground/20 pt-4">
+              <span className="font-serif text-3xl">{pingPongWar.filter(e => e.side === 'us').length}</span>
+              <p className="text-[10px] text-muted-foreground mt-1">🇺🇸 美国发布</p>
+            </div>
+          </div>
         </div>
 
         <div className="lg:col-span-8">
-          <div className="relative">
+          <div className="relative max-h-[600px] overflow-y-auto pr-4 scrollbar-thin">
             {/* Center line */}
             <div className="absolute left-1/2 top-0 bottom-0 w-px bg-foreground/10 hidden md:block" />
 
-            <div className="space-y-4">
-              {pingPongWar.map((event, index) => (
+            <div className="space-y-3">
+              {displayEvents.map((event, index) => (
                 <div 
-                  key={`${event.date}-${event.model}`}
-                  className={`flex items-center gap-4 transition-all duration-700 ease-luxury ${
+                  key={`${event.date}-${event.model}-${index}`}
+                  className={`flex items-center gap-3 transition-all duration-500 ease-luxury ${
                     isVisible ? 'opacity-100' : 'opacity-0'
                   } ${event.side === 'us' ? 'md:flex-row' : 'md:flex-row-reverse'}`}
-                  style={{ transitionDelay: `${index * 100}ms` }}
+                  style={{ transitionDelay: `${Math.min(index * 50, 500)}ms` }}
                 >
                   <div className={`flex-1 ${event.side === 'us' ? 'md:text-right' : 'md:text-left'}`}>
-                    <span className="text-xs text-muted-foreground">{event.date}</span>
-                    <p className="font-serif text-lg md:text-xl mt-1">
+                    <div className="flex items-center gap-2 flex-wrap justify-start md:justify-end">
+                      {event.side === 'us' && (
+                        <>
+                          <span className="text-[10px] text-muted-foreground">{event.date}</span>
+                          <span className="text-[10px] px-1.5 py-0.5 bg-foreground/10 rounded">
+                            {event.company}
+                          </span>
+                        </>
+                      )}
+                      {event.side === 'china' && (
+                        <>
+                          <span className="text-[10px] px-1.5 py-0.5 bg-accent/20 rounded">
+                            {event.company}
+                          </span>
+                          <span className="text-[10px] text-muted-foreground">{event.date}</span>
+                        </>
+                      )}
+                    </div>
+                    <p className="font-serif text-sm md:text-base mt-1 leading-tight">
                       {event.model}
                     </p>
-                    <span className="text-[10px] tracking-luxury uppercase text-accent">
+                    <span className="text-[10px] tracking-luxury text-accent">
                       {event.action}
                     </span>
                   </div>
                   
-                  <div className={`w-3 h-3 rounded-full shrink-0 ${
+                  <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${
                     event.side === 'us' ? 'bg-foreground' : 'bg-accent'
                   }`} />
                   
@@ -170,15 +267,22 @@ const PingPongTimeline = () => {
           </div>
 
           {/* Legend */}
-          <div className="mt-12 flex items-center justify-center gap-8">
+          <div className="mt-8 flex items-center justify-center gap-8 border-t border-foreground/10 pt-6">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-foreground" />
-              <span className="text-xs text-muted-foreground">USA</span>
+              <span className="text-xs text-muted-foreground">🇺🇸 USA</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-accent" />
-              <span className="text-xs text-muted-foreground">China</span>
+              <span className="text-xs text-muted-foreground">🇨🇳 China</span>
             </div>
+          </div>
+
+          {/* Pull quote */}
+          <div className="mt-8 p-6 bg-secondary/30">
+            <p className="font-serif text-base md:text-lg italic text-center">
+              "以前是美国领跑半年，2025 年变成了按周甚至按天的交替领跑。"
+            </p>
           </div>
         </div>
       </div>
