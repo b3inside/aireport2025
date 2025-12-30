@@ -12,6 +12,8 @@ import month07 from "@/assets/months/07-july.jpg";
 import month08 from "@/assets/months/08-august.jpg";
 import month09 from "@/assets/months/09-september.jpg";
 import month10 from "@/assets/months/10-october.jpg";
+import month11 from "@/assets/months/11-november.jpg";
+import month12 from "@/assets/months/12-december.jpg";
 
 const monthImages: Record<number, string> = {
   1: month01,
@@ -24,6 +26,8 @@ const monthImages: Record<number, string> = {
   8: month08,
   9: month09,
   10: month10,
+  11: month11,
+  12: month12,
 };
 
 interface MonthCardProps {
