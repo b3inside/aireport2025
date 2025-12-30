@@ -1,6 +1,31 @@
 import { monthlyMVPs, type MonthlyMVP } from "@/data/reportData";
 import { useEffect, useRef, useState } from "react";
 
+// Import month images
+import month01 from "@/assets/months/01-january.jpg";
+import month02 from "@/assets/months/02-february.jpg";
+import month03 from "@/assets/months/03-march.jpg";
+import month04 from "@/assets/months/04-april.jpg";
+import month05 from "@/assets/months/05-may.jpg";
+import month06 from "@/assets/months/06-june.jpg";
+import month07 from "@/assets/months/07-july.jpg";
+import month08 from "@/assets/months/08-august.jpg";
+import month09 from "@/assets/months/09-september.jpg";
+import month10 from "@/assets/months/10-october.jpg";
+
+const monthImages: Record<number, string> = {
+  1: month01,
+  2: month02,
+  3: month03,
+  4: month04,
+  5: month05,
+  6: month06,
+  7: month07,
+  8: month08,
+  9: month09,
+  10: month10,
+};
+
 interface MonthCardProps {
   data: MonthlyMVP;
   index: number;
@@ -49,17 +74,25 @@ const MonthCard = ({ data, index }: MonthCardProps) => {
         </div>
       </div>
 
-      {/* Image placeholder */}
+      {/* Image */}
       <div className={`lg:col-span-5 ${isEven ? 'lg:order-2' : 'lg:order-3'}`}>
         <div className="relative aspect-[3/4] overflow-hidden bg-secondary">
-          {/* Placeholder pattern */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center">
-              <span className="text-6xl md:text-8xl font-serif text-foreground/10">
-                {String(data.monthNumber).padStart(2, '0')}
-              </span>
+          {monthImages[data.monthNumber] ? (
+            <img
+              src={monthImages[data.monthNumber]}
+              alt={`${data.month} - ${data.title}`}
+              className="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-luxury"
+            />
+          ) : (
+            /* Placeholder for months without images */
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center">
+                <span className="text-6xl md:text-8xl font-serif text-foreground/10">
+                  {String(data.monthNumber).padStart(2, '0')}
+                </span>
+              </div>
             </div>
-          </div>
+          )}
           {/* Inner border shadow */}
           <div className="absolute inset-0 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.06)]" />
         </div>
