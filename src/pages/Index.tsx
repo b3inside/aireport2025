@@ -1,13 +1,24 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { GridLines, PaperTexture } from "@/components/report/VisualElements";
+import { HeroSection } from "@/components/report/HeroSection";
+import { MonthlyMVPSection } from "@/components/report/MonthlyMVPSection";
+import { DeepDiveSection } from "@/components/report/DeepDiveSection";
+import { FunSection } from "@/components/report/FunSection";
+import { ClosingSection } from "@/components/report/ClosingSection";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <main className="relative min-h-screen">
+      {/* Visual overlays */}
+      <PaperTexture />
+      <GridLines />
+
+      {/* Content sections */}
+      <HeroSection />
+      <MonthlyMVPSection />
+      <DeepDiveSection />
+      <FunSection />
+      <ClosingSection />
+    </main>
   );
 };
 
