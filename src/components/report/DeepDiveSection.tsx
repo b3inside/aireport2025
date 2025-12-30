@@ -61,7 +61,8 @@ const DeflationChart = () => {
                   <div 
                     className="absolute left-0 top-0 h-full bg-accent transition-all duration-1000 ease-luxury"
                     style={{ 
-                      width: isVisible ? `${Math.min(100, Math.max(5, (1 / point.pricePerMillion) * 20))}%` : '0%',
+                      // Use logarithmic scale: map price range $10 → $0.02 to bar width 8% → 85%
+                      width: isVisible ? `${Math.min(85, Math.max(8, 8 + (Math.log10(10 / point.pricePerMillion) / Math.log10(500)) * 77))}%` : '0%',
                       transitionDelay: `${index * 150 + 300}ms`
                     }}
                   />
