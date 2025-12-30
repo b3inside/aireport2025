@@ -71,7 +71,7 @@ export const HeroSection = () => {
           style={{ transitionDelay: '800ms' }}
         >
           <p className="text-sm md:text-base text-muted-foreground max-w-md">
-            From <AnimatedCounter items={modelNames} /> to the rise of agents,
+            From <AnimatedCounter items={modelNames} finalItem="DeepSeek-R1" /> to the rise of agents,
             this is the story of AI's most transformative year.
           </p>
         </div>

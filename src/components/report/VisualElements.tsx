@@ -23,12 +23,14 @@ export const PaperTexture = () => {
 
 interface AnimatedCounterProps {
   items: string[];
+  finalItem?: string;
   interval?: number;
 }
 
-export const AnimatedCounter = ({ items, interval = 150 }: AnimatedCounterProps) => {
+export const AnimatedCounter = ({ items, finalItem, interval = 150 }: AnimatedCounterProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(true);
+  const [showFinal, setShowFinal] = useState(false);
 
   useEffect(() => {
     if (!isAnimating) return;
@@ -37,20 +39,23 @@ export const AnimatedCounter = ({ items, interval = 150 }: AnimatedCounterProps)
       setCurrentIndex((prev) => (prev + 1) % items.length);
     }, interval);
 
-    // Stop after a few cycles
+    // Stop after a few cycles and show final item
     const stopTimer = setTimeout(() => {
       setIsAnimating(false);
+      if (finalItem) {
+        setShowFinal(true);
+      }
     }, items.length * interval * 3);
 
     return () => {
       clearInterval(timer);
       clearTimeout(stopTimer);
     };
-  }, [items, interval, isAnimating]);
+  }, [items, interval, isAnimating, finalItem]);
 
   return (
     <span className={`inline-block transition-opacity duration-100 ${isAnimating ? 'animate-counter-spin' : ''}`}>
-      {items[currentIndex]}
+      {showFinal ? finalItem : items[currentIndex]}
     </span>
   );
 };
