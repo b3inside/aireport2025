@@ -85,7 +85,7 @@ const MonthCard = ({ data, index }: MonthCardProps) => {
             <img
               src={monthImages[data.monthNumber]}
               alt={`${data.month} - ${data.title}`}
-              className="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-luxury"
+              className="absolute inset-0 w-full h-full object-cover"
             />
           ) : (
             /* Placeholder for months without images */
