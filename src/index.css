@@ -163,7 +163,7 @@
     line-height: 0.8;
     margin-right: 0.75rem;
     margin-top: 0.25rem;
-    color: hsl(var(--foreground));
+    color: inherit;
   }
 
   /* Grayscale to Color Image Transition */
