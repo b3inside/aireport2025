@@ -124,7 +124,7 @@ const PingPongTimeline = () => {
           setIsVisible(true);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.05 }
     );
 
     if (timelineRef.current) {
