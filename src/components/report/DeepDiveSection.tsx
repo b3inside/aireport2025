@@ -94,24 +94,28 @@ const DeflationChart = () => {
 
 const PingPongTimeline = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
 
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const monthNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   
-  // Group events by month
-  const eventsByMonth = months.reduce((acc, month) => {
-    acc[month] = pingPongWar.filter(e => e.date.startsWith(month));
+  // Group events by month number
+  const eventsByMonth = monthNumbers.reduce((acc, month) => {
+    const monthPrefix = monthNames[month - 1];
+    acc[month] = pingPongWar.filter(e => e.date.startsWith(monthPrefix));
     return acc;
-  }, {} as Record<string, typeof pingPongWar>);
+  }, {} as Record<number, typeof pingPongWar>);
 
   // Count by side per month
-  const monthStats = months.map(month => {
+  const monthStats = monthNumbers.map(month => {
     const events = eventsByMonth[month];
     const china = events.filter(e => e.side === 'china').length;
     const us = events.filter(e => e.side === 'us').length;
     return { month, china, us, total: china + us };
   });
+
+  const maxTotal = Math.max(...monthStats.map(s => s.total), 1);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -130,9 +134,9 @@ const PingPongTimeline = () => {
     return () => observer.disconnect();
   }, []);
 
-  const displayEvents = selectedMonth 
+  const displayEvents = selectedMonth !== null
     ? eventsByMonth[selectedMonth] 
-    : pingPongWar.slice(0, 12); // Show first 12 if no month selected
+    : pingPongWar;
 
   return (
     <div 
@@ -155,43 +159,68 @@ const PingPongTimeline = () => {
             2025年共计 {pingPongWar.length} 次重大模型发布。
           </p>
 
-          {/* Month selector bar chart */}
+          {/* Month selector bar chart - stacked bars */}
           <div className="mt-8 space-y-2">
             <span className="text-[10px] tracking-luxury uppercase text-muted-foreground">
-              按月筛选
+              按月筛选 (点击月份查看详情)
             </span>
-            <div className="grid grid-cols-12 gap-1 mt-2">
+            
+            {/* Legend for bar chart */}
+            <div className="flex items-center gap-4 mt-2 mb-3">
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 bg-accent" />
+                <span className="text-[10px] text-muted-foreground">🇨🇳 中国</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 bg-foreground/60" />
+                <span className="text-[10px] text-muted-foreground">🇺🇸 美国</span>
+              </div>
+            </div>
+
+            {/* Bar chart grid */}
+            <div className="flex items-end gap-1 sm:gap-2 h-24">
               {monthStats.map((stat, index) => (
                 <button
                   key={stat.month}
                   onClick={() => setSelectedMonth(selectedMonth === stat.month ? null : stat.month)}
-                  className={`relative h-16 transition-all duration-300 ease-luxury ${
+                  className={`flex-1 flex flex-col items-stretch transition-all duration-300 ease-luxury group ${
                     isVisible ? 'opacity-100' : 'opacity-0'
-                  } ${selectedMonth === stat.month ? 'ring-1 ring-accent' : ''}`}
+                  } ${selectedMonth === stat.month ? 'ring-2 ring-accent ring-offset-1 ring-offset-primary' : ''}`}
                   style={{ transitionDelay: `${index * 50}ms` }}
                 >
-                  {/* China portion (bottom) */}
+                  {/* Stacked bar container */}
                   <div 
-                    className="absolute bottom-0 left-0 right-0 bg-accent transition-all duration-500"
-                    style={{ height: `${(stat.china / Math.max(...monthStats.map(s => s.total))) * 100}%` }}
-                  />
-                  {/* US portion (top) */}
-                  <div 
-                    className="absolute bottom-0 left-0 right-0 bg-foreground/40 transition-all duration-500"
-                    style={{ 
-                      height: `${((stat.china + stat.us) / Math.max(...monthStats.map(s => s.total))) * 100}%`,
-                      clipPath: `inset(${(stat.china / (stat.china + stat.us || 1)) * 100}% 0 0 0)`
-                    }}
-                  />
-                  <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[8px] text-muted-foreground">
-                    {stat.month.slice(0, 1)}
+                    className="w-full flex flex-col justify-end"
+                    style={{ height: '80px' }}
+                  >
+                    {/* US portion (top) */}
+                    <div 
+                      className="w-full bg-foreground/60 transition-all duration-500 group-hover:bg-foreground/80"
+                      style={{ height: `${(stat.us / maxTotal) * 80}px` }}
+                    />
+                    {/* China portion (bottom) */}
+                    <div 
+                      className="w-full bg-accent transition-all duration-500 group-hover:brightness-110"
+                      style={{ height: `${(stat.china / maxTotal) * 80}px` }}
+                    />
+                  </div>
+                  {/* Month number label */}
+                  <span className="text-[10px] sm:text-xs text-muted-foreground mt-1 text-center">
+                    {stat.month}
                   </span>
                 </button>
               ))}
             </div>
-            <div className="flex justify-between mt-6 text-[10px] text-muted-foreground">
-              <span>点击月份查看详情</span>
-              {selectedMonth && (
+
+            {/* Selection info */}
+            <div className="flex justify-between mt-4 text-[10px] text-muted-foreground">
+              <span>
+                {selectedMonth !== null 
+                  ? `${selectedMonth}月: 🇨🇳 ${monthStats[selectedMonth - 1].china} / 🇺🇸 ${monthStats[selectedMonth - 1].us}`
+                  : '显示全年数据'
+                }
+              </span>
+              {selectedMonth !== null && (
                 <button 
                   onClick={() => setSelectedMonth(null)}
                   className="text-accent hover:underline"
@@ -216,37 +245,35 @@ const PingPongTimeline = () => {
         </div>
 
         <div className="lg:col-span-8">
-          <div className="relative max-h-[600px] overflow-y-auto pr-4 scrollbar-thin">
-            {/* Center line */}
-            <div className="absolute left-1/2 top-0 bottom-0 w-px bg-foreground/10 hidden md:block" />
+          {/* Timeline - full height, no scroll */}
+          <div className="relative">
+            {/* Center line - hidden on mobile */}
+            <div className="absolute left-1/2 top-0 bottom-0 w-px bg-foreground/10 hidden lg:block" />
 
             <div className="space-y-3">
               {displayEvents.map((event, index) => (
                 <div 
                   key={`${event.date}-${event.model}-${index}`}
-                  className={`flex items-center gap-3 transition-all duration-500 ease-luxury ${
+                  className={`flex flex-col lg:flex-row items-start lg:items-center gap-2 lg:gap-3 transition-all duration-500 ease-luxury ${
                     isVisible ? 'opacity-100' : 'opacity-0'
-                  } ${event.side === 'us' ? 'md:flex-row' : 'md:flex-row-reverse'}`}
-                  style={{ transitionDelay: `${Math.min(index * 50, 500)}ms` }}
+                  } ${event.side === 'us' ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}
+                  style={{ transitionDelay: `${Math.min(index * 30, 300)}ms` }}
                 >
-                  <div className={`flex-1 ${event.side === 'us' ? 'md:text-right' : 'md:text-left'}`}>
-                    <div className="flex items-center gap-2 flex-wrap justify-start md:justify-end">
-                      {event.side === 'us' && (
-                        <>
-                          <span className="text-[10px] text-muted-foreground">{event.date}</span>
-                          <span className="text-[10px] px-1.5 py-0.5 bg-foreground/10 rounded">
-                            {event.company}
-                          </span>
-                        </>
-                      )}
-                      {event.side === 'china' && (
-                        <>
-                          <span className="text-[10px] px-1.5 py-0.5 bg-accent/20 rounded">
-                            {event.company}
-                          </span>
-                          <span className="text-[10px] text-muted-foreground">{event.date}</span>
-                        </>
-                      )}
+                  {/* Content */}
+                  <div className={`flex-1 w-full lg:w-auto ${event.side === 'us' ? 'lg:text-right' : 'lg:text-left'}`}>
+                    <div className={`flex items-center gap-2 flex-wrap ${
+                      event.side === 'us' ? 'lg:justify-end' : 'lg:justify-start'
+                    }`}>
+                      {/* Mobile: show dot inline */}
+                      <div className={`w-2 h-2 rounded-full shrink-0 lg:hidden ${
+                        event.side === 'us' ? 'bg-foreground' : 'bg-accent'
+                      }`} />
+                      <span className="text-[10px] text-muted-foreground">{event.date}</span>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                        event.side === 'us' ? 'bg-foreground/10' : 'bg-accent/20'
+                      }`}>
+                        {event.company}
+                      </span>
                     </div>
                     <p className="font-serif text-sm md:text-base mt-1 leading-tight">
                       {event.model}
@@ -256,18 +283,20 @@ const PingPongTimeline = () => {
                     </span>
                   </div>
                   
-                  <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${
+                  {/* Center dot - desktop only */}
+                  <div className={`w-2.5 h-2.5 rounded-full shrink-0 hidden lg:block ${
                     event.side === 'us' ? 'bg-foreground' : 'bg-accent'
                   }`} />
                   
-                  <div className="flex-1 hidden md:block" />
+                  {/* Spacer for opposite side - desktop only */}
+                  <div className="flex-1 hidden lg:block" />
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Legend */}
-          <div className="mt-8 flex items-center justify-center gap-8 border-t border-foreground/10 pt-6">
+          {/* Legend - desktop */}
+          <div className="mt-8 hidden lg:flex items-center justify-center gap-8 border-t border-foreground/10 pt-6">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-foreground" />
               <span className="text-xs text-muted-foreground">🇺🇸 USA</span>
