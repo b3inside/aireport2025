@@ -280,9 +280,6 @@ const PingPongTimeline = () => {
                     <p className="font-serif text-xs sm:text-sm md:text-base mt-0.5 sm:mt-1 leading-tight truncate">
                       {event.model}
                     </p>
-                    <span className="text-[8px] sm:text-[10px] tracking-luxury text-accent hidden sm:inline">
-                      {event.action}
-                    </span>
                   </div>
                   
                   {/* Center dot */}
