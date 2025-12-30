@@ -57,11 +57,11 @@ const DeflationChart = () => {
                 <span className="text-xs text-muted-foreground w-20 shrink-0">
                   {point.date}
                 </span>
-                <div className="flex-1 h-px bg-foreground/10 relative">
+                <div className="flex-1 h-px bg-foreground/10 relative overflow-hidden">
                   <div 
                     className="absolute left-0 top-0 h-full bg-accent transition-all duration-1000 ease-luxury"
                     style={{ 
-                      width: isVisible ? `${Math.max(5, (1 / point.pricePerMillion) * 20)}%` : '0%',
+                      width: isVisible ? `${Math.min(100, Math.max(5, (1 / point.pricePerMillion) * 20))}%` : '0%',
                       transitionDelay: `${index * 150 + 300}ms`
                     }}
                   />
