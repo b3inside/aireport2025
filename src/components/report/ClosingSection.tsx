@@ -118,7 +118,7 @@ export const ClosingSection = () => {
               </div>
               
               <p className="text-[10px] text-primary-foreground/40">
-                © 2025. Crafted with intention. All data sourced from public announcements.
+                © 2025. All data sourced from public announcements, compiled by Charles, and the YLWS group.
               </p>
             </div>
           </div>
