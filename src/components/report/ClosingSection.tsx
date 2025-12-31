@@ -111,10 +111,6 @@ export const ClosingSection = () => {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="flex items-center gap-4">
                 <span className="font-serif text-lg">2025 AI Report</span>
-                <div className="h-4 w-px bg-primary-foreground/20" />
-                <span className="text-[10px] tracking-luxury uppercase text-primary-foreground/60">
-                  Vol. 01
-                </span>
               </div>
               
               <p className="text-[10px] text-primary-foreground/40">
