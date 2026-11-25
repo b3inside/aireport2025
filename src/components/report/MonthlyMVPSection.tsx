@@ -130,6 +130,17 @@ const MonthCard = ({ data, index }: MonthCardProps) => {
             {data.reason}
           </p>
 
+          <ul className="space-y-2 text-sm text-muted-foreground" aria-label="Primary sources">
+            {data.events.map(event => (
+              <li key={event.source}>
+                <span className="mr-2">{event.date}</span>
+                <a href={event.source} className="underline underline-offset-4 hover:text-foreground">
+                  {event.model} · {event.company}{event.model.endsWith("preprint") ? " (arXiv)" : ""}
+                </a>
+              </li>
+            ))}
+          </ul>
+
           {/* Category tag */}
           <div className="pt-4">
             <span className="text-[10px] tracking-luxury uppercase text-accent border-b border-accent pb-1">
@@ -186,8 +197,7 @@ export const MonthlyMVPSection = () => {
           </h2>
           
           <p className="mt-6 text-muted-foreground max-w-xl text-base md:text-lg">
-            Twelve months. Twelve moments that defined the trajectory of artificial intelligence. 
-            Each entry marks a turning point in the relentless march of progress.
+            Highlights from each month, with dates and links to the original announcements.
           </p>
         </div>
 

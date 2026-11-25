@@ -1,7 +1,7 @@
-import { priceDeflation, pingPongWar, personalityMilestones } from "@/data/reportData";
+import { launchPrices, selectedReleases, interactionMilestones } from "@/data/reportData";
 import { useEffect, useRef, useState } from "react";
 
-const DeflationChart = () => {
+const LaunchPriceChart = () => {
   const [isVisible, setIsVisible] = useState(false);
   const chartRef = useRef<HTMLDivElement>(null);
 
@@ -35,18 +35,17 @@ const DeflationChart = () => {
             Analytics 01
           </span>
           <h3 className="font-serif text-3xl md:text-4xl mt-4">
-            The Great{" "}
-            <em className="text-accent">Deflation</em>
+            API{" "}
+            <em className="text-accent">Launch Prices</em>
           </h3>
           <p className="mt-4 text-muted-foreground text-sm md:text-base leading-relaxed">
-            When intelligence became cheaper than water. The cost per million tokens 
-            collapsed 500x in twelve months.
+            Published launch prices for standard, uncached API input on three selected OpenAI models. Figures are in USD per million input tokens.
           </p>
         </div>
 
         <div className="lg:col-span-8">
           <div className="space-y-6">
-            {priceDeflation.map((point, index) => (
+            {launchPrices.map((point, index) => (
               <div 
                 key={point.date}
                 className={`flex items-center gap-6 transition-all duration-700 ease-luxury ${
@@ -54,46 +53,38 @@ const DeflationChart = () => {
                 }`}
                 style={{ transitionDelay: `${index * 150}ms` }}
               >
-                <span className="text-xs text-muted-foreground w-20 shrink-0">
-                  {point.date}
-                </span>
+                <div className="w-24 shrink-0 text-sm">
+                  <a href={point.source} className="underline underline-offset-4 hover:text-accent">{point.model}</a>
+                  <span className="block text-xs text-muted-foreground">{point.date}</span>
+                </div>
                 <div className="flex-1 h-px bg-foreground/10 relative overflow-hidden">
                   <div 
                     className="absolute left-0 top-0 h-full bg-accent transition-all duration-1000 ease-luxury"
                     style={{ 
-                      // Use logarithmic scale: map price range $10 → $0.02 to bar width 8% → 85%
-                      width: isVisible ? `${Math.min(85, Math.max(8, 8 + (Math.log10(10 / point.pricePerMillion) / Math.log10(500)) * 77))}%` : '0%',
+                      width: isVisible ? `${point.pricePerMillion / Math.max(...launchPrices.map(price => price.pricePerMillion)) * 100}%` : '0%',
                       transitionDelay: `${index * 150 + 300}ms`
                     }}
                   />
                 </div>
                 <div className="text-right shrink-0 w-32">
                   <span className="font-serif text-2xl md:text-3xl">
-                    ${point.pricePerMillion < 1 ? point.pricePerMillion.toFixed(2) : point.pricePerMillion}
+                    ${point.pricePerMillion.toFixed(2)}
                   </span>
                   <span className="text-[10px] text-muted-foreground block">
-                    per 1M tokens
+                    per 1M input tokens
                   </span>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Books metaphor */}
-          <div className="mt-12 p-8 bg-secondary/50">
-            <p className="font-serif text-lg md:text-xl italic text-center">
-              "In January, $1 bought one Harry Potter analysis.
-              <br />
-              By December, $1 bought an entire library."
-            </p>
-          </div>
         </div>
       </div>
     </div>
   );
 };
 
-const PingPongTimeline = () => {
+const ReleaseTimeline = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState<number | null>(1);
   const timelineRef = useRef<HTMLDivElement>(null);
@@ -104,9 +95,9 @@ const PingPongTimeline = () => {
   // Group events by month number
   const eventsByMonth = monthNumbers.reduce((acc, month) => {
     const monthPrefix = monthNames[month - 1];
-    acc[month] = pingPongWar.filter(e => e.date.startsWith(monthPrefix));
+    acc[month] = selectedReleases.filter(e => e.date.startsWith(monthPrefix));
     return acc;
-  }, {} as Record<number, typeof pingPongWar>);
+  }, {} as Record<number, typeof selectedReleases>);
 
   // Count by side per month
   const monthStats = monthNumbers.map(month => {
@@ -137,7 +128,7 @@ const PingPongTimeline = () => {
 
   const displayEvents = selectedMonth !== null
     ? eventsByMonth[selectedMonth] 
-    : pingPongWar;
+    : selectedReleases;
 
   return (
     <div 
@@ -152,12 +143,11 @@ const PingPongTimeline = () => {
             Analytics 02
           </span>
           <h3 className="font-serif text-3xl md:text-4xl mt-4">
-            The Ping-Pong{" "}
-            <em className="text-accent">War</em>
+            Selected{" "}
+            <em className="text-accent">Releases</em>
           </h3>
           <p className="mt-4 text-muted-foreground text-sm md:text-base leading-relaxed">
-            🇺🇸 vs 🇨🇳: An arms race with leads swapping weekly, sometimes daily.
-            {pingPongWar.length} major model releases in 2025.
+            {selectedReleases.length} selected announcements from U.S. and Chinese teams. Dates follow the linked announcements or the first public paper.
           </p>
 
           {/* Month selector bar chart - stacked bars */}
@@ -241,11 +231,11 @@ const PingPongTimeline = () => {
           {/* Stats */}
           <div className="mt-8 grid grid-cols-2 gap-4">
             <div className="border-t border-foreground/20 pt-4">
-              <span className="font-serif text-3xl">{pingPongWar.filter(e => e.side === 'china').length}</span>
+              <span className="font-serif text-3xl">{selectedReleases.filter(e => e.side === 'china').length}</span>
               <p className="text-[10px] text-muted-foreground mt-1">🇨🇳 China Releases</p>
             </div>
             <div className="border-t border-foreground/20 pt-4">
-              <span className="font-serif text-3xl">{pingPongWar.filter(e => e.side === 'us').length}</span>
+              <span className="font-serif text-3xl">{selectedReleases.filter(e => e.side === 'us').length}</span>
               <p className="text-[10px] text-muted-foreground mt-1">🇺🇸 USA Releases</p>
             </div>
           </div>
@@ -278,9 +268,9 @@ const PingPongTimeline = () => {
                         {event.company}
                       </span>
                     </div>
-                    <p className="font-serif text-xs sm:text-sm md:text-base mt-0.5 sm:mt-1 leading-tight truncate">
+                    <a href={event.source} className="block font-serif text-xs sm:text-sm md:text-base mt-0.5 sm:mt-1 leading-tight break-words underline underline-offset-4 hover:text-accent">
                       {event.model}
-                    </p>
+                    </a>
                   </div>
                   
                   {/* Center dot */}
@@ -307,19 +297,13 @@ const PingPongTimeline = () => {
             </div>
           </div>
 
-          {/* Pull quote */}
-          <div className="mt-8 p-6 bg-secondary/30">
-            <p className="font-serif text-base md:text-lg italic text-center">
-              "What used to be a six-month American lead became a weekly, sometimes daily, back-and-forth in 2025."
-            </p>
-          </div>
         </div>
       </div>
     </div>
   );
 };
 
-const PersonalitySection = () => {
+const InteractionSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -353,18 +337,17 @@ const PersonalitySection = () => {
             Analytics 03
           </span>
           <h3 className="font-serif text-3xl md:text-4xl mt-4">
-            The Uncanny{" "}
-            <em className="text-accent">Valley</em>
+            Beyond{" "}
+            <em className="text-accent">the Chat Box</em>
           </h3>
           <p className="mt-4 text-muted-foreground text-sm md:text-base leading-relaxed">
-            When AI learned to pause, flirt, and argue. The Turing test didn't collapse—
-            it became irrelevant.
+            Three releases brought streaming speech, sound in generated video, and browser actions into AI products.
           </p>
         </div>
 
         <div className="lg:col-span-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {personalityMilestones.map((milestone, index) => (
+            {interactionMilestones.map((milestone, index) => (
               <div 
                 key={milestone.trait}
                 className={`border-t border-foreground p-6 transition-all duration-700 ease-luxury hover:bg-secondary/50 ${
@@ -378,9 +361,9 @@ const PersonalitySection = () => {
                 <h4 className="font-serif text-2xl mt-3 text-accent">
                   {milestone.trait}
                 </h4>
-                <p className="text-sm text-muted-foreground mt-2">
+                <a href={milestone.source} className="mt-2 block text-sm text-muted-foreground underline underline-offset-4 hover:text-accent">
                   {milestone.model}
-                </p>
+                </a>
                 <p className="text-sm text-foreground/80 mt-4 leading-relaxed">
                   {milestone.description}
                 </p>
@@ -388,15 +371,6 @@ const PersonalitySection = () => {
             ))}
           </div>
 
-          {/* Pull quote */}
-          <div className="mt-12 border-l-4 border-accent pl-6 py-4">
-            <p className="font-serif text-xl md:text-2xl italic">
-              "IQ 180 PhD, occasionally drinks too much."
-            </p>
-            <span className="text-xs text-muted-foreground mt-2 block">
-              — On AI hallucinations, 2025
-            </span>
-          </div>
         </div>
       </div>
     </div>
@@ -448,15 +422,14 @@ export const DeepDiveSection = () => {
             </h2>
             
             <p className="mt-6 text-primary-foreground/70 max-w-xl text-base md:text-lg">
-              Beyond the headlines. The data that reveals what really happened 
-              when intelligence became a commodity.
+              A look at published API prices, selected releases, and ways to interact with models.
             </p>
           </div>
 
           {/* Analytics components */}
-          <DeflationChart />
-          <PingPongTimeline />
-          <PersonalitySection />
+          <LaunchPriceChart />
+          <ReleaseTimeline />
+          <InteractionSection />
         </div>
       </div>
     </section>

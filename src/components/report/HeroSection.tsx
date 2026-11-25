@@ -32,7 +32,7 @@ export const HeroSection = () => {
         >
           <div className="h-px w-8 md:w-12 bg-foreground/40" />
           <span className="text-[10px] md:text-xs tracking-luxury uppercase text-muted-foreground">
-            The Definitive Chronicle
+            An illustrated year in review
           </span>
         </div>
 
@@ -72,7 +72,7 @@ export const HeroSection = () => {
         >
           <p className="text-sm md:text-base text-muted-foreground max-w-md">
             From <AnimatedCounter items={modelNames} finalItem="DeepSeek-R1" /> to the rise of agents,
-            this is the story of AI's most transformative year.
+            this report follows key AI releases across 2025.
           </p>
         </div>
 

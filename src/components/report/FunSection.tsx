@@ -40,8 +40,7 @@ const SherlockedAwards = () => {
             <br />Awards
           </h3>
           <p className="mt-4 text-muted-foreground text-sm md:text-base leading-relaxed">
-            A memorial for products launched moments before AI giants decided 
-            to build the feature themselves.
+            An editorial look at what happens when a standalone feature becomes part of a general-purpose assistant.
           </p>
         </div>
 
@@ -61,7 +60,7 @@ const SherlockedAwards = () => {
                       {victim.product}
                     </h4>
                     <p className="text-sm text-muted-foreground mt-2">
-                      Killed by: <span className="text-accent">{victim.killer}</span>
+                      Overlap: <span className="text-accent">{victim.killer}</span>
                     </p>
                   </div>
                   <span className="text-4xl opacity-20">†</span>
@@ -116,8 +115,7 @@ const Glossary = () => {
             <em className="text-accent">Glossary</em>
           </h3>
           <p className="mt-4 text-muted-foreground text-sm md:text-base leading-relaxed">
-            The vocabulary that emerged from the chaos. 
-            Words that didn't exist in January.
+            A short guide to terms that came up in conversations about AI in 2025.
           </p>
         </div>
 
@@ -139,11 +137,6 @@ const Glossary = () => {
                     {entry.term.slice(1)}
                   </h4>
                 </div>
-                {entry.pronunciation && (
-                  <p className="text-sm text-muted-foreground mt-2 ml-12 md:ml-16">
-                    {entry.pronunciation}
-                  </p>
-                )}
                 <p className="text-base md:text-lg text-foreground/80 mt-4 ml-12 md:ml-16 leading-relaxed">
                   {entry.definition}
                 </p>
@@ -202,8 +195,7 @@ export const FunSection = () => {
           </h2>
           
           <p className="mt-6 text-muted-foreground max-w-xl text-base md:text-lg">
-            Not everything was serious. Some things were just absurd—
-            and we catalogued them all.
+            A few observations and terms from a year of experimenting with AI.
           </p>
         </div>
 

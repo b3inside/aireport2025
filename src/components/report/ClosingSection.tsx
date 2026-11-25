@@ -40,29 +40,15 @@ export const ClosingSection = () => {
               </span>
               
               <h2 className="font-serif text-4xl md:text-6xl lg:text-7xl mt-6">
-                What{" "}
+                Questions for{" "}
                 <em className="text-accent">2026</em>
-                <br />
-                Holds
               </h2>
               
               <div className="mt-12 space-y-6 text-primary-foreground/80">
                 <p className="text-lg md:text-xl leading-relaxed drop-cap">
-                  If 2025 taught us anything, it's that predictions are futile. 
-                  The models that dominated January were relics by December. 
-                  The companies that seemed untouchable faced existential threats 
-                  from open-source alternatives.
-                </p>
-                
-                <p className="text-lg md:text-xl leading-relaxed">
-                  Yet certain trajectories seem inevitable: agents will become 
-                  more autonomous, reasoning will become standard, and the line 
-                  between human and artificial creativity will blur further.
-                </p>
-                
-                <p className="text-lg md:text-xl leading-relaxed">
-                  The only certainty? Next year's report will need to be 
-                  rewritten from scratch.
+                  In 2025, reasoning models, multimodal tools, and agents became available in more products.
+                  The releases in this report point to questions about reliability, cost, and where these tools
+                  help in everyday work.
                 </p>
               </div>
             </div>
@@ -72,28 +58,28 @@ export const ClosingSection = () => {
               <div className="space-y-8">
                 <div className="border-t border-primary-foreground/20 pt-6">
                   <span className="text-[10px] tracking-luxury uppercase text-primary-foreground/60">
-                    Prediction 01
+                    Agents
                   </span>
                   <p className="font-serif text-xl md:text-2xl mt-2">
-                    Autonomous agents will handle 30% of routine knowledge work
+                    Which tasks can agents complete reliably with human oversight?
                   </p>
                 </div>
                 
                 <div className="border-t border-primary-foreground/20 pt-6">
                   <span className="text-[10px] tracking-luxury uppercase text-primary-foreground/60">
-                    Prediction 02
+                    Pricing
                   </span>
                   <p className="font-serif text-xl md:text-2xl mt-2">
-                    API costs will drop another 10x—intelligence becomes utility-priced
+                    How does the cost per completed task change as models and tools evolve?
                   </p>
                 </div>
                 
                 <div className="border-t border-primary-foreground/20 pt-6">
                   <span className="text-[10px] tracking-luxury uppercase text-primary-foreground/60">
-                    Prediction 03
+                    Workflows
                   </span>
                   <p className="font-serif text-xl md:text-2xl mt-2">
-                    The first "AI-native" company will reach $10B valuation
+                    Where do AI tools fit into existing creative and technical work?
                   </p>
                 </div>
               </div>
@@ -114,7 +100,7 @@ export const ClosingSection = () => {
               </div>
               
               <p className="text-[10px] text-primary-foreground/40">
-                © 2025. All data sourced from public announcements, compiled by Charles, and the YLWS group.
+                Compiled by Charles and the YLWS group. Original announcements are linked throughout the report.
               </p>
             </div>
           </div>
